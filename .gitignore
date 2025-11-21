@@ -1,0 +1,48 @@
+# === Build outputs ===
+/build/
+/out/
+/target/
+
+# === Java ===
+*.class
+*.hprof
+*.jfr
+
+# === Gradle ===
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+gradle-app.setting.bak
+
+# === IntelliJ IDEA ===
+.idea/
+/.idea/
+*.iml
+*.iws
+
+# === VSCode (just in case) ===
+.vscode/
+
+# === OS / Desktop noise ===
+.DS_Store
+Thumbs.db
+
+# === Logs ===
+logs/
+*.log
+
+# === Temporary files ===
+*.tmp
+*.temp
+*.bak
+*~
+
+# === Bottles / Wine (in case of accident) ===
+/bottle/
+/bottles/                # if a cool path creates weird folders
+/wine/                   # in case of...
+*.lnk                     # windows links inside the bottle.
+
+# === Run directories ===
+/bin/
+/run/
