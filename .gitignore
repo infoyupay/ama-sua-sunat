@@ -1,5 +1,5 @@
 # === Build outputs ===
-/build/
+**/build/
 /out/
 /target/
 
@@ -9,6 +9,7 @@
 *.jfr
 
 # === Gradle ===
+**/gradle/
 .gradle/
 !gradle/wrapper/gradle-wrapper.jar
 gradle-app.setting
