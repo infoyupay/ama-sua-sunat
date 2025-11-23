@@ -46,3 +46,6 @@ logs/
 # === Run directories ===
 /bin/
 /run/
+
+# Local databases
+*.db
