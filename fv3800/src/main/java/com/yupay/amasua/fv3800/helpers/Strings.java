@@ -1,7 +1,7 @@
-package org.yupay.amasua.fv3800.helpers;
+package com.yupay.amasua.fv3800.helpers;
 
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntPredicate;
 
@@ -37,10 +37,11 @@ public class Strings {
      *                 if {@code maxChars <= 0}, no limit is applied
      * @return a new sanitized string containing only the filtered characters
      */
-    @Contract("_, _, _ -> new")
-    public static @NotNull String sanitize(@NotNull String s,
-                                           IntPredicate filter,
-                                           int maxChars) {
+    @Contract("!null, _, _ -> new; null, _, _ -> null")
+    public static @Nullable String sanitize(@Nullable String s,
+                                            IntPredicate filter,
+                                            int maxChars) {
+        if (s == null) return null;
         var len = s.length();
         var out = new char[len];
         var j = 0;
@@ -71,8 +72,8 @@ public class Strings {
      *                 if {@code maxChars <= 0}, no limit is applied
      * @return a string composed exclusively of digit characters
      */
-    @Contract("_, _ -> new")
-    public static @NotNull String onlyDigits(@NotNull String s, int maxChars) {
+    @Contract("!null, _ -> new; null, _ -> null")
+    public static @Nullable String onlyDigits(@Nullable String s, int maxChars) {
         return sanitize(s, Character::isDigit, maxChars);
     }
 
@@ -83,8 +84,8 @@ public class Strings {
      * @param s the input string (never {@code null})
      * @return a string composed exclusively of digit characters
      */
-    @Contract("_ -> new")
-    public static @NotNull String onlyDigits(@NotNull String s) {
+    @Contract("!null -> new; null -> null")
+    public static @Nullable String onlyDigits(@Nullable String s) {
         return onlyDigits(s, 0);
     }
 
@@ -99,8 +100,8 @@ public class Strings {
      *                 if {@code maxChars <= 0}, no limit is applied
      * @return a string composed exclusively of alphanumeric characters
      */
-    @Contract("_, _ -> new")
-    public static @NotNull String alnum(@NotNull String s, int maxChars) {
+    @Contract("!null, _ -> new; null, _ -> null")
+    public static @Nullable String alnum(@Nullable String s, int maxChars) {
         return sanitize(s, Character::isLetterOrDigit, maxChars);
     }
 
@@ -111,8 +112,8 @@ public class Strings {
      * @param s the input string (never {@code null})
      * @return a string composed exclusively of alphanumeric characters
      */
-    @Contract("_ -> new")
-    public static @NotNull String alnum(@NotNull String s) {
+    @Contract("!null -> new; null -> null")
+    public static @Nullable String alnum(@Nullable String s) {
         return alnum(s, 0);
     }
 }

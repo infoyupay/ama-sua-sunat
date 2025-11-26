@@ -144,7 +144,7 @@ jooq {
 
                             // DATE: of epoch day
                             ForcedType().apply {
-                                name = "INTEGER"
+                                name = "BIGINT"
                                 includeExpression = ".*\\.(birthday|.*_date|.*_at)$"
                                 userType = "java.time.LocalDate"
                                 converter = "com.yupay.amasua.fv3800.model.jooq.converters.EpochDaysConverter"
@@ -152,7 +152,7 @@ jooq {
 
                             // UNSCALED DECIMALS: integers, 6 decimals
                             ForcedType().apply {
-                                name = "INTEGER"
+                                name = "BIGINT"
                                 includeExpression = ".*\\.(value_.*|.*_percentage)$"
                                 excludeExpression = ".*\\.value_type"
                                 userType = "java.math.BigDecimal"

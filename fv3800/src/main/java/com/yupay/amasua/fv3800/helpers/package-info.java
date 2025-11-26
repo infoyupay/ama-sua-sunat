@@ -9,7 +9,7 @@
  * They avoid stream pipelines and other high-overhead constructs, favoring
  * direct character iteration for maximum throughput.<br/>
  * <br/>
- * At present, this package contains the {@link org.yupay.amasua.fv3800.helpers.Strings}
+ * At present, this package contains the {@link com.yupay.amasua.fv3800.helpers.Strings}
  * utility class, which offers methods for extracting digits, alphanumeric
  * characters and custom-filtered subsets of a string with optional length
  * limits.<br/>
@@ -21,4 +21,4 @@
  * @author David Vidal
  * @version 1.0
  */
-package org.yupay.amasua.fv3800.helpers;
+package com.yupay.amasua.fv3800.helpers;
