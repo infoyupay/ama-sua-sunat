@@ -48,6 +48,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
     implementation("org.jetbrains:annotations:26.0.2-1")
 
+    //DOI Validation
+    implementation("com.infoyupay.validator:validator-doi:1.0.0")
+
     // --- Testing ---
     testImplementation("org.junit.jupiter:junit-jupiter:6.0.1")
     testImplementation("org.assertj:assertj-core:3.27.6")
