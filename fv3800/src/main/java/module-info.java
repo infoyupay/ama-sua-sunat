@@ -27,4 +27,5 @@
 module fv3800 {
     requires org.jooq;
     requires org.jetbrains.annotations;
+    requires pe.validator.doi;
 }
