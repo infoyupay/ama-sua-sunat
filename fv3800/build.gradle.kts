@@ -52,7 +52,9 @@ dependencies {
     implementation("com.infoyupay.validator:validator-doi:1.0.0")
 
     // --- Testing ---
-    testImplementation("org.junit.jupiter:junit-jupiter:6.0.1")
+    testImplementation(platform("org.junit:junit-bom:6.0.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.assertj:assertj-core:3.27.6")
 }
 
@@ -80,6 +82,9 @@ jooq {
 
     configurations {
         create("main") {
+
+            generateSchemaSourceOnCompilation = false
+
             jooqConfiguration.apply {
 
                 // JDBC Config
