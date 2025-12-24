@@ -1,5 +1,6 @@
 package com.yupay.amasua.fv3800.infra;
 
+import com.yupay.amasua.fv3800.exception.FV3800Exception;
 import com.yupay.amasua.fv3800.exception.FV3800PersistenceException;
 
 import java.nio.file.Path;
@@ -133,11 +134,11 @@ public final class AppContext {
     /**
      * Initializes the executor services for the current context.
      *
-     * @throws IllegalStateException if executors are already started
+     * @throws FV3800Exception if executors are already started
      */
     private void startExecutors() {
         if (jooqExecutor != null || generalExecutor != null) {
-            throw new IllegalStateException("Executors already started.");
+            throw new FV3800Exception("Executors already started.");
         }
         jooqExecutor = Executors.newVirtualThreadPerTaskExecutor();
         generalExecutor = Executors.newVirtualThreadPerTaskExecutor();
@@ -196,7 +197,7 @@ public final class AppContext {
      * Returns an executor intended for persistence-related tasks.
      *
      * @return an {@link Executor} for jOOQ and database work
-     * @throws IllegalStateException if the context is not initialized
+     * @throws FV3800Exception if the context is not initialized
      */
     public Executor jooqExecutor() {
         lifecycleLock.lock();
@@ -212,7 +213,7 @@ public final class AppContext {
      * Returns a general-purpose executor.
      *
      * @return an {@link Executor} for non-persistence work
-     * @throws IllegalStateException if the context is not initialized
+     * @throws FV3800Exception if the context is not initialized
      */
     public Executor generalExecutor() {
         lifecycleLock.lock();
@@ -227,11 +228,11 @@ public final class AppContext {
     /**
      * Ensures that the context has been fully initialized.
      *
-     * @throws IllegalStateException if the context is not ready
+     * @throws FV3800Exception if the context is not ready
      */
     private void ensureStarted() {
         if (dbPath == null || jooqExecutor == null || generalExecutor == null) {
-            throw new IllegalStateException("AppContext has not been initialized.");
+            throw new FV3800Exception("AppContext has not been initialized.");
         }
     }
 
@@ -270,7 +271,7 @@ public final class AppContext {
      *
      * @param taskEpoch the epoch associated with the calling task
      * @return a new {@link Connection}
-     * @throws IllegalStateException      if the task belongs to a stale context
+     * @throws FV3800Exception      if the task belongs to a stale context
      * @throws FV3800PersistenceException if the connection cannot be created
      */
     public Connection supplyConnection(long taskEpoch) {
@@ -279,7 +280,7 @@ public final class AppContext {
             ensureStarted();
 
             if (!isEpochValid(taskEpoch)) {
-                throw new IllegalStateException(
+                throw new FV3800Exception(
                         "Stale task detected (context epoch mismatch)."
                 );
             }
