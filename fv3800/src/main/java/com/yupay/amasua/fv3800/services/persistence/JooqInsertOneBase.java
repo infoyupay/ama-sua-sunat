@@ -1,6 +1,5 @@
 package com.yupay.amasua.fv3800.services.persistence;
 
-import org.jooq.Table;
 import org.jooq.UpdatableRecord;
 
 import java.util.concurrent.CompletableFuture;
@@ -9,9 +8,8 @@ import java.util.concurrent.CompletableFuture;
  * Base helper interface for simple jOOQ insert operations.
  * <br/>
  * This interface provides a reusable default implementation for inserting
- * a single POJO into the database using jOOQ, delegating transaction handling,
- * error conversion, and asynchronous execution to the underlying
- * {@link JooqPersistenceContext}.
+ * a single POJO into the database using jOOQ, relying on the associated
+ * {@link JooqUpdatableDescriptor} to resolve the target table and POJO type.
  * <br/>
  * The abstraction is intentionally minimal and mechanical: it encapsulates
  * the repetitive jOOQ pattern of creating a record from a POJO, storing it,
@@ -26,11 +24,11 @@ import java.util.concurrent.CompletableFuture;
  * @version 1.0
  */
 public interface JooqInsertOneBase<R extends UpdatableRecord<R>, P>
-        extends JooqPersistenceContext {
+        extends JooqPersistenceContext, JooqUpdatableDescriptor<R, P> {
 
     /**
-     * Inserts a single POJO into the given table and returns the persisted
-     * representation.
+     * Inserts a single POJO using the table and mapping defined by the
+     * associated {@link JooqUpdatableDescriptor}.
      * <br/>
      * The operation is executed asynchronously within a transactional context.
      * Any runtime exception thrown during record creation or persistence is
@@ -41,22 +39,16 @@ public interface JooqInsertOneBase<R extends UpdatableRecord<R>, P>
      * persistence, including generated identifiers, default values, and
      * database-side modifications.
      *
-     * @param table    the jOOQ table into which the record will be inserted.
-     * @param pojoType the concrete POJO class used for record-to-POJO conversion.
-     * @param pojo     the POJO instance to be inserted.
+     * @param pojo the POJO instance to be inserted.
      * @return a {@link CompletableFuture} containing a {@link QueryResult}
      * that represents either the successfully persisted POJO or a
      * failure state.
      */
-    default CompletableFuture<QueryResult<P>> insertOne(
-            Table<R> table,
-            Class<P> pojoType,
-            P pojo
-    ) {
+    default CompletableFuture<QueryResult<P>> insertOne(P pojo) {
         return inTransactionAsync(dsl -> {
-            var r = dsl.newRecord(table, pojo);
+            var r = dsl.newRecord(updatableTable(), pojo);
             r.store();
-            return r.into(pojoType);
+            return r.into(pojoClass());
         });
     }
 }

@@ -5,6 +5,7 @@ import com.yupay.amasua.fv3800.model.jooq.tables.pojos.Paykuna;
 import com.yupay.amasua.fv3800.model.jooq.tables.records.PaykunaRecord;
 import com.yupay.amasua.fv3800.services.persistence.validation.PaykunaValidator;
 import org.jetbrains.annotations.NotNull;
+import org.jooq.Table;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,7 +29,6 @@ import static com.yupay.amasua.fv3800.model.jooq.Tables.PAYKUNA;
  *
  * @param context the application context providing executors and
  *                persistence configuration.
- *
  * @author David Vidal - InfoYupay SACS
  * @version 1.0
  */
@@ -58,13 +58,23 @@ public record PaykunaPersistenceService(@NotNull AppContext context)
      *
      * @param paykuna the Paykuna instance to validate and persist.
      * @return a {@link CompletableFuture} containing a {@link QueryResult}
-     *         representing either the persisted Paykuna or a failure state.
+     * representing either the persisted Paykuna or a failure state.
      */
     public @NotNull CompletableFuture<QueryResult<Paykuna>> insertOnePaykuna(Paykuna paykuna) {
         return PaykunaValidator
                 .validatePaykunaAsync(paykuna, context.generalExecutor())
                 .thenCompose(qr -> qr.isFailure()
                         ? CompletableFuture.completedFuture(qr)
-                        : insertOne(PAYKUNA, Paykuna.class, qr.value()));
+                        : insertOne(qr.value()));
+    }
+
+    @Override
+    public Table<PaykunaRecord> updatableTable() {
+        return PAYKUNA;
+    }
+
+    @Override
+    public Class<Paykuna> pojoClass() {
+        return Paykuna.class;
     }
 }
