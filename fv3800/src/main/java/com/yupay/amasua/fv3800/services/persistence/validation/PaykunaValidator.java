@@ -141,12 +141,6 @@ public final class PaykunaValidator {
     @Contract("_, _ -> new")
     public static @NotNull CompletableFuture<QueryResult<Paykuna>>
     validatePaykunaAsync(Paykuna paykuna, Executor executor) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return QueryResult.success(validatePaykuna(paykuna));
-            } catch (FV3800PersistenceValidationException e) {
-                return QueryResult.failure(e);
-            }
-        }, executor);
+        return AsyncValidator.validateAsync(PaykunaValidator::validatePaykuna, paykuna, executor);
     }
 }
